@@ -1,0 +1,2 @@
+# go_video_store_nginx
+部署视频服务单体应用的nginx
