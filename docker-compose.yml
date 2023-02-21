@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+    go_server_common:
+      build: ./
+      container_name: go_video_store_server
+      environment:
+         FILE_SERVER_NAME: "video-api.k8ss.shop"
+         RESTY_CONFIG_OPTIONS_MORE: "--with-echo_nginx_module"
+      ports:
+         - "8191:80"
+#      network_mode: host
+      networks:
+        - go_video_store_go_video_store_network
+      volumes:
+        - ../:/apps
+        - ./conf/nginx:/etc/nginx
+        #consul-template
+#        - ./consul-template:/consul-template
+#        - ./consul-template/consul-template:/usr/local/bin/consul-template
+        # 日志存放路径，需要同级目录创建本目录
+        - ./supervisor:/supervisor
+        - ../logs:/apps/logs
+        - ./conf/nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx_template.conf
+      command: /sh/start.sh
+
+networks:
+  go_video_store_go_video_store_network:
+#    name: go_video_store_network
+    external: true
+
+
+
